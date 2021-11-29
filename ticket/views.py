@@ -1,57 +1,50 @@
 import base64
-
+import configparser
+import os
 import requests
-import json
 from django.shortcuts import render
-from django.http import HttpResponse, JsonResponse
-from django.template import loader
 import datetime
-from django.views.generic import ListView
-
-
-
-# API_KEY = config('API_TOKEN')
-from django_tables2 import SingleTableView
-
 from ticket.models import Ticket
 from ticket.tables import TicketTable
 
 
 def getAllTickets(request):
-    text = "sbagdi@ucsd.edu/token:cvincpBcG2aVvx3c5vzGogZH0jHoTtlpLyqS4hM3"
+    config = get_config('app.ini')
+    text = config['DEFAULT']['email_id']+"/"+config['DEFAULT']['api_token']
     base64_bytes = base64.b64encode(text.encode('ascii'))
     token = base64_bytes.decode('ascii')
-    endpoint = "https://zccsiddharth.zendesk.com/api/v2/incremental/tickets.json?start_time=1332034771"
+    endpoint = config['DEFAULT']['api_url']+config['DEFAULT']['all_tickets_url']
     headers = {'Content-Type': 'application/json', "Authorization": "Basic " + str(token), 'Accept': 'application/json'}
-    response = requests.get(endpoint, headers=headers)
-    if response.status_code == 200 and 'tickets' in response.json():
-        print("HERE", response.json())
-        for ticket in Ticket.objects.all():
-            Ticket.objects.get(id=ticket.id).delete()
+    try:
+        response = requests.get(endpoint, headers=headers)
+        if response.status_code == 200 :
+            print("NO ERROR")
+            for ticket in Ticket.objects.all():
+                Ticket.objects.get(id=ticket.id).delete()
 
-        for ticket in response.json()['tickets']:
+            for ticket in response.json()['tickets']:
                 create_ticket_object(ticket)
 
-        context = response
-        return render(request, 'ticket/allTickets.html', context)
-    else:
-        return render(request, 'ticket/ApiError.html')
-
-    # body_unicode = json.dumps(response)
-    # body = json.loads(body_unicode)
-    # u = Tickets(**body)
-    # u.save()
-    # print(Tickets.objects.all)
-    # return JsonResponse({"result": "OK"})
-    # return HttpResponse("You're looking at request")
-
+            return None
+        else:
+            print("ERROR")
+            return render(request, 'ticket/ApiError.html')
+    except:
+        print("Exception")
+        return 1
+def get_config(file_name):
+    path = os.path.dirname(os.path.realpath(__file__))
+    config_dir = '/'.join([path, file_name])
+    config = configparser.ConfigParser()
+    config.read(config_dir)
+    return config
 
 def detail(request, ticket_id):
-
-    text = "sbagdi@ucsd.edu/token:cvincpBcG2aVvx3c5vzGogZH0jHoTtlpLyqS4hM3"
+    config = get_config('app.ini')
+    text = config['DEFAULT']['email_id'] + "/" + config['DEFAULT']['api_token']
     base64_bytes = base64.b64encode(text.encode('ascii'))
     token = base64_bytes.decode('ascii')
-    endpoint = "https://zccsiddharth.zendesk.com//api/v2/tickets/"+str(ticket_id)
+    endpoint = config['DEFAULT']['api_url'] + config['DEFAULT']['single_ticket_url']+"/" + str(ticket_id)
     headers = {'Content-Type': 'application/json', "Authorization": "Basic " + str(token), 'Accept': 'application/json'}
     response = requests.get(endpoint, headers=headers)
     print(response)
@@ -59,7 +52,7 @@ def detail(request, ticket_id):
 
 def index(request):
     return render(request, 'ticket/landing.html')
-# Create your views here.
+
 
 def search(request):
     if request.method == 'POST':
@@ -68,14 +61,12 @@ def search(request):
         try:
             if str(search_id).isnumeric() and Ticket.objects.filter(id=search_id).exists():
                 ticket = Ticket.objects.get(id = search_id)
-                print(ticket.description)
-                print(json.dumps(ticket))
 
             else:
                 response = detail(request, search_id)
                 if response.status_code==200 and response.json()['ticket']:
                     create_ticket_object(response.json()['ticket'])
-                elif response.status_code in (400,404, 500):
+                elif response.status_code in (400,404,401, 500):
                     return render(request, 'ticket/TicketNotFound.html')
                 else:
                     print(response.status_code)
@@ -83,8 +74,6 @@ def search(request):
 
             return render(request, 'ticket/ticket.html', context={'ticket': ticket})
         except Ticket.DoesNotExist:
-            # detail(request, search_id)
-            print("Exception!")
             return render(request, 'ticket/TicketNotFound.html')
     else:
         return render(request, 'ticket/landing.html')
@@ -115,14 +104,17 @@ def create_ticket_object(ticket_json):
     ticket.save()
 
 
-class TicketListView(SingleTableView):
+# class TicketListView(SingleTableView):
+#
+#     model = Ticket
+#     table_class = TicketTable
+#     queryset = Ticket.objects.all()
+#     template_name = 'ticket/allTickets.html'
 
-    model = Ticket
-    table_class = TicketTable
-    queryset = Ticket.objects.all()
-    template_name = 'ticket/allTickets.html'
-
-# def ticket_listing(request):
-#     table = TicketTable(Ticket.objects.all())
-#     table.paginate(page=request.GET.get("page", 1), per_page=25)
-#     return render(request, "ticket/allTickets.html", {"table": table})
+def ticket_listing(request):
+    x=getAllTickets(request)
+    if x==1:
+        return render(request, 'ticket/ApiError.html')
+    table = TicketTable(Ticket.objects.all())
+    table.paginate(page=request.GET.get("page", 1), per_page=25)
+    return render(request, "ticket/allTickets.html", {"table": table})

@@ -23,9 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-z=ktquy@i0x$%^7b&w@e%-14y=9=7cpchvydke@*mkkzc%ozc2'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -34,7 +34,6 @@ INSTALLED_APPS = [
     'ticket',
     'django_tables2',
     'bootstrap4',
-    # 'ticket.apps.TicketConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
