@@ -9,6 +9,13 @@ Features -
 
 ![image](https://user-images.githubusercontent.com/91580288/143808750-04ee0a7d-f35f-43c1-85c4-7b5131c6dac8.png)
 
+4. Ticket Invalid Error handling
+![image](https://user-images.githubusercontent.com/91580288/143835474-bba99a42-8f28-4f29-9d6a-2e0efd4a43bb.png)
+
+5. API/Program Error
+![image](https://user-images.githubusercontent.com/91580288/143835618-2a6e3518-cef2-417e-9a73-3245d4c6547e.png)
+
+
 Setup Instructions:
 
 1. Clone repository
