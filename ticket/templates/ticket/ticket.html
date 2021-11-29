@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+  integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+  crossorigin="anonymous">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <title>Title</title>
+</head>
+<style>
+
+    #searchpagesearchbar{
+    height: 60px;
+    border-radius: 30px;
+    width: 100%;
+}
+    input, select, textarea {
+    font-size: 150%;
+    font-weight: 100;
+    padding-left: 10%;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+}
+    .example-card {
+    max-width: 400px;
+    margin-bottom: 8px;
+    border: 10px;
+  }
+
+
+  .card-title{
+      font-size: 20px;
+  }
+
+  .light-font{
+      font-weight: 100;
+  }
+
+  .right-align>.row{
+      justify-self: right;
+  }
+
+  img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  header.masthead {
+  padding-top: 4rem;
+  padding-bottom: 1rem;
+  text-align: center;
+  color: #000;
+  background-repeat: no-repeat;
+  background-attachment: scroll;
+  background-position: center center;
+  background-size: cover;
+}
+
+header.masthead .masthead-subheading {
+  font-size: 1.5rem;
+
+  line-height: 1.5rem;
+  margin-bottom: 25px;
+  font-family: "Montserrat", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+header.masthead .masthead-heading {
+  font-size: 4.25rem;
+  font-weight: lighter;
+  line-height: 3.25rem;
+  margin-bottom: 2rem;
+  font-family: "Montserrat", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+
+}
+</style>
+<body>
+<header class="masthead">
+        <div class="container">
+            <div class="masthead-heading" > View Ticket</div>
+        </div>
+    </header>
+ <div class="row" >
+        <div class="col-sm-2"></div>
+
+        <div class="col-sm-8">
+
+                <div class="container">
+                    <div class="row" style="justify-content: center">
+                        <div class="col-sm-8">
+                        <form autocomplete="off" aria-multiselectable="true" method="POST" action="/ticket/search" style="width: 100%">
+    {% csrf_token %}
+                            <input id="searchpagesearchbar" placeholder="Search by Ticket ID.." name="id" >
+                        </form>
+                    </div>
+                         <div class="col-sm-3">
+                <button type="button" id="searchpagesearchbar" class="btn btn-primary btn-lg" onclick="location.href = '/ticket/allTickets';">View All Tickets</button>
+            </div>
+                </div>
+            </div>
+
+        </div>
+
+<div class="container col-sm-8" style="margin-top: 2%;" >
+  <div class="card">
+    <h1 class="card-header light-font" >Ticket ID {{ ticket.id }}</h1>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-lg-12 col-sm-12" style="text-align: center">
+                <h5 class="card-title " autocapitalize="true">Subject : {{ ticket.subject }}</h5>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-lg-4 col-sm-12">
+                <h5 class="card-title " autocapitalize="true">Status : {{ ticket.status }}</h5>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-lg-12 col-sm-12">
+                <h5 class="card-title " autocapitalize="true">Description : </h5>
+                <p>{{ ticket.description }}</p>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-sm-6 " style="padding-left: 30px; font-size: larger;">
+                <div class="row">
+                    Assignee ID : {{ ticket.assignee_id}}
+                </div>
+                <div class="row">
+                    Requester ID : {{ ticket.requester_id }}
+                </div>
+                <div class="row">
+                    Submitter ID : {{ ticket.submitter_id }}
+                </div>
+            </div>
+            <div class="col-sm-3"></div>
+            <div class="col-sm-3" style="font-size: larger;">
+                <div class="row" >
+                    Priority : {{ ticket.priority }}
+                </div>
+                <div class="row">
+                    Type : {{ ticket.type }}
+                </div>
+                <div class="row">
+                    Created at : {{  ticket.created_at }}
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+     <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+  integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+  crossorigin="anonymous">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<style>
+    .row{
+    justify-content: center
+}
+
+
+header.masthead {
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+  text-align: center;
+  color: #000;
+  background-repeat: no-repeat;
+  background-attachment: scroll;
+  background-position: center center;
+  background-size: cover;
+}
+
+header.masthead .masthead-subheading {
+  font-size: 1.5rem;
+
+  line-height: 1.5rem;
+  margin-bottom: 25px;
+  font-family: "Montserrat", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+header.masthead .masthead-heading {
+  font-size: 4.25rem;
+  font-weight: lighter;
+  line-height: 3.25rem;
+  margin-bottom: 2rem;
+  font-family: "Montserrat", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+
+}
+
+    #searchpagesearchbar{
+    height: 100px;
+    border-radius: 50px;
+    width: 100%;
+}
+
+input, select, textarea {
+    font-size: 200%;
+    font-weight: 100;
+    padding-left: 10%;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+}
+
+form{
+    width: -webkit-fill-available;
+}
+</style>
+<body>
+
+
+    <header class="masthead">
+        <div class="container">
+            <div class="masthead-heading" > ZenDesk Ticket Search Engine</div>
+        </div>
+    </header>
+    <div class="row">
+        <div class="col-sm-2"></div>
+
+        <div class="col-sm-8">
+            <div class="container">
+                <div class="row">
+                    <form autocomplete="off" aria-multiselectable="true" method="POST" action="/ticket/search">
+{% csrf_token %}
+                        <input id="searchpagesearchbar" placeholder="Search by Ticket ID.." name="id" >
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-2"></div>
+
+    </div>
+
+    <div class="row" style="margin-top: 5%">
+        <h4> OR </h4>
+    </div>
+
+    <div class="row "style="margin-top: 5%">
+        <button type="button" class="btn btn-primary btn-lg" onclick="location.href = '/ticket/allTickets';">View All Tickets</button>
+    </div>
+
+
+
+</body>
+</html>
