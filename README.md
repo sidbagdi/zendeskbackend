@@ -11,13 +11,13 @@ Features -
 
 Setup Instructions:
 
-1)Clone repository
-2)Install Python 3.8 & pip(if not installed already)
-3)pip install -r requirements.txt
-4)Run command - python manage.py makemigrations
-5)Run command - python manage.py migrate
+1. Clone repository
+2. Install Python 3.8 & pip(if not installed already)
+3. pip install -r requirements.txt
+4. Run command - python manage.py makemigrations
+5. Run command - python manage.py migrate
 
-Update dev.ini file to enter your credentials = 
+Update app.ini file to enter your credentials = 
 1. api_url=https://{subdomain}.zendesk.com
 2. api_token={your_api_token}
 3. email_id={your_email_id}
